@@ -1,41 +1,52 @@
-# Academic Paper Writing Skill (v2) - 学术论文写作技能
+# Academic Paper 插件 (v3) - 学术论文写作插件
 
-一个用于 AI 辅助学术论文写作、审稿和修订的 Claude Code 技能。专为**实证类 EECS 论文**（ML、CV、NLP、系统基准测试）设计。
+一个用于 AI 辅助学术论文写作、审稿和修订的 Claude Code 插件。专为**实证类 EECS 论文**（ML、CV、NLP、系统基准测试）设计。内置 9 个入口技能（7 个活跃 + 2 个 Phase B/C 占位）和 10 个专用 agent。
 
 [English version / 英文版](README.md)
 
 ## 架构概览
 
 ```
-用户请求
-   |
-   v
-SKILL.md (路由器)
-   |
-   +---> structure_architect (大纲)  ---> argument_builder (论证) ---> draft_writer (写作)
-   |                                                                      |
-   +---> visualization (图表生成)                                          |
-   +---> compiler (LaTeX 编译)                                            |
-   +---> citation_manager (引用管理)                                       |
-   |                                                                      v
-   |                                                               完成初稿
-   |                                                                      |
-   +---> peer_reviewer (模拟审稿) ----+                                    |
-   +---> devils_advocate (压力测试) --+--> editorial_synthesizer (综合决策)  |
-   |                                         |                            |
-   +---> revision_coach (修订指导) <---------+                            |
-              |                                                           |
-              +---> draft_writer (执行修订) ------------------------------+
+用户 slash 命令 (如 /paper-draft introduction)
+     |
+     v
+ skills/paper-<name>/SKILL.md  (入口技能，共 9 个)
+     |
+     +---> structure_architect (大纲)  ---> argument_builder (论证) ---> draft_writer (写作)
+     |                                                                      |
+     +---> visualization (图表生成)                                          |
+     +---> compiler (LaTeX 编译)                                            |
+     +---> citation_manager (引用管理)                                       |
+     |                                                                      v
+     |                                                               完成初稿
+     |                                                                      |
+     +---> peer_reviewer (模拟审稿) ----+                                    |
+     +---> devils_advocate (压力测试) --+--> editorial_synthesizer (综合决策)  |
+     |                                         |                            |
+     +---> revision_coach (修订指导) <---------+                            |
+                |                                                           |
+                +---> draft_writer (执行修订) ------------------------------+
 ```
 
-**10 个 agent**，每个有独立角色和明确的输入/输出契约。共享的 `PaperConfig` 记录贯穿所有 agent，agent 之间通过 4 个 schema 进行数据交接。
+**9 个技能**作为薄入口，**10 个 agent** 完成实际工作并保持清晰的输入/输出契约。共享的 `.paper-config.yml` (PaperConfig，schema_version 3) 在所有 agent 间流转。Agent 之间通过 4 个 schema 交接，schema 文档在 `references/handoff_schemas.md`。每个 agent 文件顶部都有统一的 config-loading 前缀负责加载配置。
 
 ## 文件结构
 
 ```
 academic-paper/
-+-- SKILL.md                          # 路由器 + 共享配置
-+-- agents/
++-- .claude-plugin/
+|   +-- plugin.json                   # 插件清单 (v3.0.0)
++-- skills/                           # 9 个入口技能
+|   +-- paper-new/SKILL.md            # 创建新论文项目
+|   +-- paper-draft/SKILL.md          # 写或改某一节
+|   +-- paper-figure/SKILL.md         # 生成出版级图
+|   +-- paper-compile/SKILL.md        # pdflatex + bibtex 编译
+|   +-- paper-cite/SKILL.md           # references.bib 管理
+|   +-- paper-review/SKILL.md         # 模拟同行评审
+|   +-- paper-revise/SKILL.md         # 处理审稿意见
+|   +-- paper-humanize/SKILL.md       # Phase B 占位
+|   +-- paper-annotate/SKILL.md       # Phase C 占位
++-- agents/                           # 10 个专用 agent
 |   +-- structure_architect.md        # 大纲设计（3 种 EECS 结构模式 + 字数分配）
 |   +-- argument_builder.md           # CER 论证链 + 4 种反驳策略
 |   +-- draft_writer.md               # TEEL 段落框架 + 写作质量检查 + 字数追踪
@@ -47,12 +58,15 @@ academic-paper/
 |   +-- devils_advocate.md            # 压力测试，CRITICAL 级发现
 |   +-- revision_coach.md             # 审稿意见解析 + 状态追踪 + 回复信生成
 +-- references/
+|   +-- handoff_schemas.md            # 4 个 agent 交接 schema
 |   +-- writing_quality_check.md      # 25 个 AI 高频词 + 5 类质量检查
++-- scripts/
+|   +-- validate_skills.py            # SKILL.md 前言 linter
 +-- templates/
 |   +-- research_paper.tex            # 标准 LaTeX 模板
 |   +-- review_report.md              # 审稿报告模板
 |   +-- revision_response.md          # R->A->C 回复信模板
-+-- evals/                            # 评测套件
++-- evals/                            # 评测套件（含 routing_eval.json）
 ```
 
 ## 环境要求
@@ -61,15 +75,33 @@ academic-paper/
 - LaTeX 发行版（TeX Live 或 MiKTeX），用于编译
 - Python 3 + matplotlib/seaborn，用于图表生成
 
-## 安装方法
+## 安装 (v3 plugin)
 
-将此目录克隆到你的 Claude Code 插件或技能目录下：
+academic-paper 仓库现在是一个 Claude Code 插件。安装方式：
 
 ```bash
-git clone https://github.com/curryfromuestc/academic-paper.git
+# 克隆到本地插件目录
+git clone https://github.com/curryfromuestc/academic-paper.git ~/.claude/plugins/academic-paper
+
+# 启用插件
+claude plugin install --scope user ~/.claude/plugins/academic-paper
 ```
 
-当 Claude Code 检测到相关意图时（如"写论文"、"生成图表"、"审稿"），技能会自动激活。
+或者使用 Claude Code 插件市场界面：打开 `/plugin` 搜索 `academic-paper`。
+
+安装后会注册以下 slash 命令：
+
+| Slash 命令 | 用途 |
+|---|---|
+| `/paper-new [venue] [subfield]` | 创建新论文项目 |
+| `/paper-draft <section>` | 写或改某一节 |
+| `/paper-figure <type> <description>` | 生成出版级图 |
+| `/paper-compile [--clean] [--page-check]` | pdflatex+bibtex 编译 |
+| `/paper-cite <action> <args>` | references.bib 管理 |
+| `/paper-review` | 模拟同行评审 |
+| `/paper-revise [<comments-file>]` | 处理审稿意见 |
+
+另外两个命令 (`/paper-humanize` 和 `/paper-annotate`) 在后续阶段加入。
 
 ## 使用教程
 

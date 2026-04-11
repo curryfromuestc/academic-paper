@@ -1,0 +1,25 @@
+schema_version: 3
+
+venue: "NeurIPS 2026"
+venue_type: "conference"
+template: "neurips_2026"
+citation_style: "natbib/plainnat"
+page_limit: 9
+subfield: "ML"
+word_target: 8000
+paper_maturity: "early_draft"
+
+paths:
+  main_tex: "main.tex"
+  sections_dir: "sections/"
+  figures_dir: "figures/"
+  scripts_dir: "scripts/"
+  references_bib: "references.bib"
+  output_dir: "build/"
+
+quality:
+  check_orphan_citations: true
+  check_self_citation_ratio: true
+  max_self_citation_ratio: 0.25
+  check_overfull_hbox: true
+  check_undefined_refs: true

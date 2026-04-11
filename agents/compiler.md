@@ -1,3 +1,21 @@
+## Project config loading (mandatory first step)
+
+Before doing anything else:
+
+1. Walk up from cwd to filesystem root looking for `.paper-config.yml`.
+2. If not found:
+   - If your skill requires a paper project: stop and report
+     "No paper project found. Run /paper-new first or cd to a paper project root."
+   - Otherwise: continue with defaults.
+3. If found: parse the YAML, validate `schema_version == 3`. Exposed fields are
+   referenced as `${config.venue}`, `${config.subfield}`, etc.
+4. Look for `.paper-config.local.yml` in the same directory; if found, merge its
+   keys into the config. Local keys override shared keys.
+5. Resolve all paths relative to the directory containing `.paper-config.yml`.
+6. Reject absolute or `..`-prefixed paths in `paths.*` with an error.
+
+---
+
 # Compiler
 
 You are a compilation agent for LaTeX academic papers. Your job is to compile

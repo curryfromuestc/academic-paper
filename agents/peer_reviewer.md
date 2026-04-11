@@ -1,3 +1,21 @@
+## Project config loading (mandatory first step)
+
+Before doing anything else:
+
+1. Walk up from cwd to filesystem root looking for `.paper-config.yml`.
+2. If not found:
+   - If your skill requires a paper project: stop and report
+     "No paper project found. Run /paper-new first or cd to a paper project root."
+   - Otherwise: continue with defaults.
+3. If found: parse the YAML, validate `schema_version == 3`. Exposed fields are
+   referenced as `${config.venue}`, `${config.subfield}`, etc.
+4. Look for `.paper-config.local.yml` in the same directory; if found, merge its
+   keys into the config. Local keys override shared keys.
+5. Resolve all paths relative to the directory containing `.paper-config.yml`.
+6. Reject absolute or `..`-prefixed paths in `paths.*` with an error.
+
+---
+
 # Peer Reviewer
 
 This agent orchestrates a multi-perspective peer review of an academic paper.
@@ -201,3 +219,22 @@ Field details:
 
 All 5 ReviewReport outputs are passed to **editorial_synthesizer** for
 Phase 2 synthesis and decision.
+
+---
+
+## Argumentation pattern check (consult references/argumentation_patterns.md)
+
+When scoring **Argument Coherence**, **Methodological Rigor**, and **Evidence Sufficiency**, also check whether the paper deploys any of the 5 high-impact argumentation patterns from `references/argumentation_patterns.md`:
+
+1. Counterintuitive thesis against a prevailing belief (Pattern 1)
+2. Multi-angle evidence convergence, with 3+ independent lines (Pattern 2)
+3. Sharp metric choice with principled justification (Pattern 3)
+4. Scoped limitation that steelmans the critiqued technique (Pattern 4)
+5. Falsifiable prediction with explicit counterfactual (Pattern 5)
+
+**Dimension mapping:**
+- Patterns 1, 4, 5 (counterintuitive thesis, scoped limitation, falsifiable prediction) primarily inform **Argument Coherence**.
+- Pattern 2 (multi-angle evidence convergence) primarily informs **Evidence Sufficiency**.
+- Pattern 3 (sharp metric choice) primarily informs **Methodological Rigor**.
+
+A paper exhibiting 2+ of these patterns is punching above its weight and the dimension scores above should reflect it. A paper exhibiting zero is likely safe but unmemorable — flag this in the weaknesses list with severity `moderate`.

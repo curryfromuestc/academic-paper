@@ -2,3 +2,10 @@ academic-paper-workspace/
 __pycache__/
 *.pyc
 .DS_Store
+
+# academic-paper plugin v3 per-user config
+.paper-config.local.yml
+
+# Tooling caches
+.codex/
+.humanize/
