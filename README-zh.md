@@ -87,6 +87,8 @@ claude plugin install --scope user ~/.claude/plugins/academic-paper
 | `/paper-review` | 模拟同行评审 |
 | `/paper-revise [<comments-file>]` | 处理审稿意见 |
 
+另外两个命令 (`/paper-humanize` 和 `/paper-annotate`) 在后续阶段加入。
+
 ## 使用教程
 
 ### 1. 开始新论文
