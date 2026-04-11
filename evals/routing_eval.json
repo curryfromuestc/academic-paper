@@ -97,6 +97,7 @@
     "adjacent_skill_no_hijack": {
       "expected_pass_rate": 0.9,
       "description": "Adjacent installed skills (humanizer, codex) must not be hijacked by academic-paper.",
+      "notes": "The expected_skill value 'humanizer' refers to an EXTERNAL Claude Code plugin, not this plugin's paper-humanize placeholder. Pass criterion: no academic-paper:* skill fires; whether the external humanizer fires (and what exact name it registers as) is out of scope for this plugin's trigger stability.",
       "entries": [
         {
           "prompt": "Humanize this blog post: 'The system serves as a testament to innovation.'",

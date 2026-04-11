@@ -7,7 +7,7 @@ citation_style: "natbib/plainnat"
 page_limit: 9
 subfield: "ML"
 word_target: 8000
-paper_maturity: "first_draft"
+paper_maturity: "early_draft"
 
 paths:
   main_tex: "main.tex"

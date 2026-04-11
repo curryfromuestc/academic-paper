@@ -1,7 +1,7 @@
 {
   "name": "academic-paper",
   "version": "3.0.0",
-  "description": "AI-assisted writing, review, and revision for empirical EECS papers (LaTeX, bibtex, NeurIPS/CVPR/IEEE). 9 skills + 10 agents + bilingual annotation + humanizer.",
+  "description": "AI-assisted writing, review, and revision for empirical EECS papers (LaTeX, bibtex, NeurIPS/CVPR/IEEE). 7 active skills + 10 agents (Phase B humanizer and Phase C annotator land later).",
   "author": {
     "name": "curryfromuestc"
   },
