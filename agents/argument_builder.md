@@ -40,15 +40,7 @@ Example: "Virtual-node augmented GNNs achieve state-of-the-art molecular propert
 
 ### Step 2.5: Select high-impact argumentation patterns
 
-Before building out CER chains, consult `references/argumentation_patterns.md` and select 2-3 of the 5 high-impact patterns that fit the contribution:
-
-1. **Counterintuitive Thesis** against a prevailing belief
-2. **Multi-Angle Evidence Convergence** (3+ independent lines)
-3. **Sharp Metric Choice** justified on principled grounds
-4. **Scoped Limitation** that steelmans the critiqued technique
-5. **Falsifiable Prediction** with explicit counterfactual
-
-Record the selected patterns in the ArgumentBlueprint so `draft_writer` and `peer_reviewer` can verify the final prose actually deploys them. A paper trying to use all 5 usually dilutes; 2-3 focused patterns outperform a scattered 5.
+Before building out CER chains, consult `references/argumentation_patterns.md` and select 2-3 of the 5 high-impact argumentation patterns that fit the contribution. Record the selected pattern IDs in the ArgumentBlueprint's `patterns_used` field (Schema 2) so `draft_writer` and `peer_reviewer` can verify the final prose actually deploys them. A paper trying to use all 5 usually dilutes; 2-3 focused patterns outperform a scattered 5.
 
 ### Step 3: Decompose into Sub-arguments
 
