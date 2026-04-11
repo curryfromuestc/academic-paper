@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "description": "Routing eval for academic-paper plugin v3 Phase A. Tests that the right paper-X skill auto-triggers in the right context, that paper-X does NOT trigger in non-paper contexts, and that disable-model-invocation skills are never auto-invoked.",
+  "categories": {
+    "direct_paper_in_paper_context": {
+      "expected_pass_rate": 0.9,
+      "description": "Direct paper-related requests, executed in a paper project. Should hit the right paper-X skill.",
+      "entries": [
+        {
+          "prompt": "Write the introduction section for my paper.",
+          "expected_skill": "academic-paper:paper-draft",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/", "open_file": "sections/intro.tex"}
+        },
+        {
+          "prompt": "Plot a bar chart comparing accuracy across the three baselines.",
+          "expected_skill": "academic-paper:paper-figure",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        },
+        {
+          "prompt": "Add a citation for the Vaswani 2017 attention paper.",
+          "expected_skill": "academic-paper:paper-cite",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        },
+        {
+          "prompt": "Simulate peer review on this paper.",
+          "expected_skill": "academic-paper:paper-review",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        }
+      ],
+      "fill_target_count": 15
+    },
+    "direct_paper_in_non_paper_context": {
+      "expected_pass_rate": 0.9,
+      "description": "Direct paper-related requests, executed OUTSIDE a paper project. Should NOT hit any paper-X skill.",
+      "entries": [
+        {
+          "prompt": "Write me an introduction.",
+          "expected_skill": null,
+          "context": {"cwd": "/tmp/", "open_file": "blog.md"}
+        },
+        {
+          "prompt": "Plot a chart for my data.",
+          "expected_skill": null,
+          "context": {"cwd": "/tmp/", "open_file": "data.csv"}
+        }
+      ],
+      "fill_target_count": 10
+    },
+    "ambiguous_verbs": {
+      "expected_pass_rate": 0.9,
+      "description": "Generic verbs (write, review, compile) that should hit paper-X only when in paper context.",
+      "entries": [
+        {
+          "prompt": "Compile this for me.",
+          "expected_skill": "academic-paper:paper-compile",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        },
+        {
+          "prompt": "Review this.",
+          "expected_skill": "academic-paper:paper-review",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        }
+      ],
+      "fill_target_count": 10
+    },
+    "compound_requests": {
+      "expected_pass_rate": 0.8,
+      "description": "Compound requests that should chain multiple paper-X skills via natural Claude orchestration.",
+      "entries": [
+        {
+          "prompt": "Review my paper and revise the introduction based on the feedback.",
+          "expected_skills_chain": ["academic-paper:paper-review", "academic-paper:paper-draft"],
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        }
+      ],
+      "fill_target_count": 5
+    },
+    "side_effect_auto_trigger_blocked": {
+      "expected_pass_rate": 1.0,
+      "description": "Skills with disable-model-invocation must NOT be auto-invoked even from paper context.",
+      "entries": [
+        {
+          "prompt": "Compile this paper now.",
+          "expected_skill": null,
+          "expected_user_must_invoke_explicitly": "academic-paper:paper-compile",
+          "context": {"cwd": "evals/fixtures/paper_project_minimal/"}
+        },
+        {
+          "prompt": "Create a new paper project here.",
+          "expected_skill": null,
+          "expected_user_must_invoke_explicitly": "academic-paper:paper-new",
+          "context": {"cwd": "/tmp/empty/"}
+        }
+      ],
+      "fill_target_count": 5
+    },
+    "adjacent_skill_no_hijack": {
+      "expected_pass_rate": 0.9,
+      "description": "Adjacent installed skills (humanizer, codex) must not be hijacked by academic-paper.",
+      "entries": [
+        {
+          "prompt": "Humanize this blog post: 'The system serves as a testament to innovation.'",
+          "expected_skill": "humanizer",
+          "context": {"cwd": "/tmp/", "open_file": "blog.md"}
+        }
+      ],
+      "fill_target_count": 5
+    }
+  }
+}
