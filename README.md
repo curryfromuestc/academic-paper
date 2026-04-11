@@ -1,16 +1,16 @@
-# Academic Paper Writing Skill (v2)
+# Academic Paper Plugin (v3)
 
-A Claude Code skill for AI-assisted academic paper writing, reviewing, and revision. Designed for **empirical EECS papers** (ML, CV, NLP, systems benchmarking).
+A Claude Code plugin for AI-assisted academic paper writing, reviewing, and revision. Designed for **empirical EECS papers** (ML, CV, NLP, systems benchmarking). Ships 9 entry skills (7 active + 2 Phase B/C placeholders) plus 10 specialized agents.
 
 [Chinese version / 中文版](README-zh.md)
 
 ## Architecture
 
 ```
-User request
+User slash command (e.g. /paper-draft introduction)
      |
      v
- SKILL.md (router)
+ skills/paper-<name>/SKILL.md  (entry point, 9 total)
      |
      +---> structure_architect  ---> argument_builder ---> draft_writer
      |                                                        |
@@ -28,14 +28,25 @@ User request
                 +---> draft_writer (execute revisions) -------+
 ```
 
-**10 agents**, each with a distinct role and clear input/output contracts. A shared `PaperConfig` record flows through all agents. Agent handoffs use 4 defined schemas.
+**9 skills** act as thin entry points; **10 agents** do the real work with clear input/output contracts. A shared `.paper-config.yml` (PaperConfig, schema_version 3) flows through all agents. Agent handoffs use 4 defined schemas documented in `references/handoff_schemas.md`. Each agent loads the config via the standard prefix at the top of its file.
 
 ## File Structure
 
 ```
 academic-paper/
-+-- SKILL.md                          # Router + shared conventions
-+-- agents/
++-- .claude-plugin/
+|   +-- plugin.json                   # Plugin manifest (v3.0.0)
++-- skills/                           # 9 entry skills
+|   +-- paper-new/SKILL.md            # Scaffold a new paper project
+|   +-- paper-draft/SKILL.md          # Draft or revise a section
+|   +-- paper-figure/SKILL.md         # Generate publication-quality figures
+|   +-- paper-compile/SKILL.md        # pdflatex + bibtex pipeline
+|   +-- paper-cite/SKILL.md           # Manage references.bib
+|   +-- paper-review/SKILL.md         # Simulate peer review
+|   +-- paper-revise/SKILL.md         # Process reviewer comments
+|   +-- paper-humanize/SKILL.md       # Phase B placeholder
+|   +-- paper-annotate/SKILL.md       # Phase C placeholder
++-- agents/                           # 10 specialized agents
 |   +-- structure_architect.md        # Outline (3 EECS patterns + word allocation)
 |   +-- argument_builder.md           # CER chains + 4 rebuttal strategies
 |   +-- draft_writer.md               # TEEL framework + quality check + word tracking
@@ -47,12 +58,15 @@ academic-paper/
 |   +-- devils_advocate.md            # Stress testing, CRITICAL findings
 |   +-- revision_coach.md             # Comment parsing + status tracking + response letter
 +-- references/
+|   +-- handoff_schemas.md            # 4 agent handoff schemas
 |   +-- writing_quality_check.md      # 25 AI-typical terms + 5 check categories
++-- scripts/
+|   +-- validate_skills.py            # SKILL.md frontmatter linter
 +-- templates/
 |   +-- research_paper.tex            # Standard LaTeX template
 |   +-- review_report.md              # Review report template
 |   +-- revision_response.md          # R->A->C response letter template
-+-- evals/                            # Evaluation suite
++-- evals/                            # Evaluation suite (includes routing_eval.json)
 ```
 
 ## Requirements
