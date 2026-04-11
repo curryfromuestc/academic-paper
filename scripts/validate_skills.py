@@ -11,8 +11,6 @@ Checks:
 """
 
 import sys
-import os
-import re
 from pathlib import Path
 
 try:
@@ -45,6 +43,8 @@ def validate(skill_md_path: Path) -> list[str]:
     name = fm.get("name")
     if not name:
         errors.append(f"{skill_md_path}: missing `name` field")
+    elif not isinstance(name, str):
+        errors.append(f"{skill_md_path}: `name` must be a string")
     elif name != expected_name:
         errors.append(
             f"{skill_md_path}: `name` is '{name}' but directory is '{expected_name}'"
@@ -53,6 +53,8 @@ def validate(skill_md_path: Path) -> list[str]:
     desc = fm.get("description")
     if not desc:
         errors.append(f"{skill_md_path}: missing `description` field")
+    elif not isinstance(desc, str):
+        errors.append(f"{skill_md_path}: `description` must be a string")
     elif len(desc) > 200:
         errors.append(
             f"{skill_md_path}: description is {len(desc)} chars (max 200)"
@@ -65,6 +67,10 @@ def validate(skill_md_path: Path) -> list[str]:
     paths = fm.get("paths")
     if paths is not None and not isinstance(paths, list):
         errors.append(f"{skill_md_path}: paths must be a list")
+
+    allowed_tools = fm.get("allowed-tools")
+    if allowed_tools is not None and not isinstance(allowed_tools, (str, list)):
+        errors.append(f"{skill_md_path}: allowed-tools must be a string or list")
 
     return errors
 
