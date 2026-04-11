@@ -111,13 +111,14 @@ cherry-picking -- the metric must be defensible independent of your result.
 
 **How to structure.**
 
-1. Describe the standard metric and what it measures (e.g., pass@1).
+1. Describe the standard metric and what it measures.
 2. Explain why the standard metric is insufficient *for your question*
-   (e.g., at k=1 you cannot distinguish "the model found one good answer"
-   from "the model has one narrow answer mode").
-3. Introduce your metric choice with principled justification
-   (e.g., pass@k at large k measures the breadth of the sampling
-   distribution, which is what "reasoning capacity" should mean).
+   (what it collapses, what aspect of the phenomenon it hides, or what
+   confound it fails to separate).
+3. Introduce your metric choice with principled justification stated
+   BEFORE seeing the results, tied to what the question actually
+   measures (the "What would a faithful test of this claim look like?"
+   criterion).
 4. Show both metrics on the same data. The reveal is that standard
    metric says A, your metric says B, and the gap is the mechanism.
 
@@ -229,8 +230,8 @@ an attempt to exhaust the counterfactual.
 
 ### When reviewing a paper (peer_reviewer)
 
-Add the following checks to the reviewer persona's Argumentation & Rigor
-axis:
+Add the following checks to the reviewer's **Argument Coherence**,
+**Methodological Rigor**, and **Evidence Sufficiency** dimensions:
 
 - Does the paper identify a counterintuitive finding and support it with
   multi-angle evidence (Patterns 1+2)?

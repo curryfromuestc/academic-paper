@@ -20,9 +20,13 @@ paper_config:     PaperConfig
 Produced by: `argument_builder`
 Consumed by: `draft_writer`
 
+See also: `references/argumentation_patterns.md` for the 5 high-impact
+argumentation patterns referenced by the `patterns_used` field.
+
 ```
 central_thesis:   string
 sub_arguments:    list of {claim, evidence, reasoning, counter, rebuttal_strategy}
+patterns_used:    list of int (pattern IDs 1-5 from argumentation_patterns.md)
 strength_score:   int (internal, 0-100)
 ```
 
