@@ -61,15 +61,31 @@ academic-paper/
 - LaTeX 发行版（TeX Live 或 MiKTeX），用于编译
 - Python 3 + matplotlib/seaborn，用于图表生成
 
-## 安装方法
+## 安装 (v3 plugin)
 
-将此目录克隆到你的 Claude Code 插件或技能目录下：
+academic-paper 仓库现在是一个 Claude Code 插件。安装方式：
 
 ```bash
-git clone https://github.com/curryfromuestc/academic-paper.git
+# 克隆到本地插件目录
+git clone https://github.com/curryfromuestc/academic-paper.git ~/.claude/plugins/academic-paper
+
+# 启用插件
+claude plugin install --scope user ~/.claude/plugins/academic-paper
 ```
 
-当 Claude Code 检测到相关意图时（如"写论文"、"生成图表"、"审稿"），技能会自动激活。
+或者使用 Claude Code 插件市场界面：打开 `/plugin` 搜索 `academic-paper`。
+
+安装后会注册以下 slash 命令：
+
+| Slash 命令 | 用途 |
+|---|---|
+| `/paper-new [venue] [subfield]` | 创建新论文项目 |
+| `/paper-draft <section>` | 写或改某一节 |
+| `/paper-figure <type> <description>` | 生成出版级图 |
+| `/paper-compile [--clean] [--page-check]` | pdflatex+bibtex 编译 |
+| `/paper-cite <action> <args>` | references.bib 管理 |
+| `/paper-review` | 模拟同行评审 |
+| `/paper-revise [<comments-file>]` | 处理审稿意见 |
 
 ## 使用教程
 

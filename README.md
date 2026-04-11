@@ -61,15 +61,35 @@ academic-paper/
 - LaTeX distribution (TeX Live or MiKTeX) for compilation
 - Python 3 with matplotlib/seaborn for figure generation
 
-## Installation
+## Installation (v3 plugin)
 
-Clone or copy this directory into your Claude Code plugins or skills folder:
+The academic-paper repository is now a Claude Code plugin. Install it with:
 
 ```bash
-git clone https://github.com/curryfromuestc/academic-paper.git
+# Clone the plugin to a local directory
+git clone https://github.com/curryfromuestc/academic-paper.git ~/.claude/plugins/academic-paper
+
+# Enable the plugin
+claude plugin install --scope user ~/.claude/plugins/academic-paper
 ```
 
-The skill activates automatically when Claude Code detects relevant intent (e.g., "write a paper", "generate figure", "review my paper").
+Or use the Claude Code plugin marketplace UI: open `/plugin` and search for
+`academic-paper`.
+
+After installation, the following slash commands become available:
+
+| Slash command | What it does |
+|---|---|
+| `/paper-new [venue] [subfield]` | Scaffold a new paper project |
+| `/paper-draft <section>` | Draft or revise a section |
+| `/paper-figure <type> <description>` | Generate a publication figure |
+| `/paper-compile [--clean] [--page-check]` | Compile pdflatex+bibtex |
+| `/paper-cite <action> <args>` | Manage references.bib |
+| `/paper-review` | Simulate peer review |
+| `/paper-revise [<comments-file>]` | Process reviewer comments |
+
+Two more commands (`/paper-humanize` and `/paper-annotate`) appear in
+later phases.
 
 ## Quick Start
 
