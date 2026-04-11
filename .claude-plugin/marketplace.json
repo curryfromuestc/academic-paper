@@ -1,0 +1,21 @@
+{
+  "name": "academic-paper",
+  "owner": {
+    "name": "curryfromuestc"
+  },
+  "metadata": {
+    "description": "Marketplace for the academic-paper plugin (v3).",
+    "version": "3.0.0"
+  },
+  "plugins": [
+    {
+      "name": "academic-paper",
+      "source": "./",
+      "description": "AI-assisted writing, review, and revision for empirical EECS papers (LaTeX, bibtex, NeurIPS/CVPR/IEEE). 7 active skills + 10 agents (Phase B humanizer and Phase C annotator land later).",
+      "version": "3.0.0",
+      "author": {
+        "name": "curryfromuestc"
+      }
+    }
+  ]
+}

@@ -2,19 +2,21 @@
   "schema_version": 1,
   "plan": "docs/superpowers/plans/2026-04-11-academic-paper-plugin-phase-a.md",
   "eval_source": "evals/routing_eval.json",
-  "status": "TODO",
-  "notes": "Routing eval has not been executed because Phase A was implemented headlessly (no interactive Claude Code session available to the agent). The user must run the eval manually after checkout. See plan file section 'Task 19' Steps 7-10 for the exact procedure.",
+  "status": "PARTIAL",
+  "notes": "Plugin install smoke test ran successfully via the marketplace mechanism after marketplace.json was added. Skill slash-command smoke tests still require a fresh interactive session (existing sessions do not pick up newly enabled plugins).",
   "smoke_tests": {
     "plugin_install": {
-      "status": "TODO",
-      "command": "claude plugin install --scope user $(pwd)",
-      "expected": "Install succeeds, no errors about missing fields or invalid frontmatter.",
-      "notes": "If install fails, rerun with `claude --debug plugin install --scope user $(pwd) 2>&1 | tail -50`."
+      "status": "PASS",
+      "command": "claude plugin marketplace add /home/yanggl/code/academic-paper && claude plugin install academic-paper@academic-paper",
+      "expected": "Install succeeds; 'claude plugin list' shows academic-paper@academic-paper v3.0.0 enabled.",
+      "observed": "Marketplace added, plugin installed at user scope, listed as enabled v3.0.0. 'claude plugin validate' passed with 10 warnings (agent files missing YAML frontmatter). Warnings do not block install or runtime routing when skills explicitly delegate by agent name, but future work should add frontmatter with description fields so agents are routable via natural language intent.",
+      "notes": "The Phase A plan incorrectly assumed `claude plugin install <local-path>` would work. The correct local install path requires marketplace.json at .claude-plugin/marketplace.json describing the plugin with source './'. marketplace.json was added in the fix commit that ships this results update."
     },
     "paper_new": {
       "status": "TODO",
       "command": "cd /tmp/smoke-paper-test && claude /paper-new \"NeurIPS 2026\" \"ML\"",
-      "expected": "Wizard runs, writes .paper-config.yml, scaffolds main.tex + sections/ + Makefile."
+      "expected": "Wizard runs, writes .paper-config.yml, scaffolds main.tex + sections/ + Makefile.",
+      "notes": "Requires a fresh `claude` session (existing sessions do not hot-reload plugin changes)."
     },
     "paper_draft": {
       "status": "TODO",
@@ -25,6 +27,25 @@
       "status": "TODO",
       "command": "cd /tmp/smoke-paper-test && claude /paper-compile",
       "expected": "pdflatex runs, non-empty build/main.pdf produced. Skip if TeX distribution not installed."
+    }
+  },
+  "known_warnings": {
+    "agent_frontmatter_missing": {
+      "severity": "low",
+      "affected_files": [
+        "agents/structure_architect.md",
+        "agents/argument_builder.md",
+        "agents/draft_writer.md",
+        "agents/visualization.md",
+        "agents/compiler.md",
+        "agents/citation_manager.md",
+        "agents/peer_reviewer.md",
+        "agents/editorial_synthesizer.md",
+        "agents/devils_advocate.md",
+        "agents/revision_coach.md"
+      ],
+      "description": "All 10 agents lack YAML frontmatter. `claude plugin validate` emits one warning per agent. Explicit delegation by name (the v3 design: skills invoke agents by name) still works. Affects agent description / metadata exposure for auto-routing and `/agents` UI listing.",
+      "fix_path": "Add a frontmatter block with name: <agent-name> and description: <when to use> to each agent file, above the existing config-loading prefix."
     }
   },
   "acceptance_criteria": {
