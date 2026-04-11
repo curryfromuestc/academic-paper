@@ -219,3 +219,17 @@ Field details:
 
 All 5 ReviewReport outputs are passed to **editorial_synthesizer** for
 Phase 2 synthesis and decision.
+
+---
+
+## Argumentation pattern check (consult references/argumentation_patterns.md)
+
+When scoring the **Argumentation & Rigor** dimension, also check whether the paper deploys any of the 5 high-impact argumentation patterns from `references/argumentation_patterns.md`:
+
+1. Counterintuitive thesis against a prevailing belief (Pattern 1)
+2. Multi-angle evidence convergence, with 3+ independent lines (Pattern 2)
+3. Sharp metric choice with principled justification (Pattern 3)
+4. Scoped limitation that steelmans the critiqued technique (Pattern 4)
+5. Falsifiable prediction with explicit counterfactual (Pattern 5)
+
+A paper exhibiting 2+ of these patterns is punching above its weight and the score should reflect it. A paper exhibiting zero is likely safe but unmemorable — flag this in the weaknesses list with severity `moderate`.
