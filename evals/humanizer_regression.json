@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "description": "Regression test for academic-paper:paper-humanize. 20 short English paragraphs covering common paper section types. Each paragraph deliberately exhibits one or more AI-writing patterns and lists which patterns should be rewritten and which phrases must survive (academic overrides). Ran by the Phase B acceptance check.",
+  "source_spec": "docs/superpowers/specs/2026-04-11-academic-paper-plugin-design.md#47-phase-b-eval",
+  "patterns_reference": "references/humanizer_patterns.md",
+  "overrides_reference": "references/humanizer_academic_overrides.md",
+  "samples": [
+    {
+      "id": "abstract_001",
+      "section": "abstract",
+      "mode": "academic",
+      "input": "In this work, we propose a novel attention mechanism that delves into the intricate landscape of long-tailed visual recognition. It is important to note that our approach underscores the pivotal role of frequency-aware reweighting. In order to achieve this goal, we introduce a two-stage training pipeline that garners substantial gains over prior work on three standard benchmarks.",
+      "should_change_at": [7, 23],
+      "should_preserve": ["we propose", "novel", "long-tailed"],
+      "notes": "Flags blocklisted AI vocabulary (delves, landscape, pivotal, garners, underscores) and filler phrases (it is important to note that, in order to achieve this goal). Preserves the academic-allowed descriptor 'novel' and the technical compound 'long-tailed'."
+    },
+    {
+      "id": "abstract_002",
+      "section": "abstract",
+      "mode": "academic",
+      "input": "You are absolutely right that unsupervised pretraining is an excellent direction, and our results confirm this exciting intuition. The future looks bright for this line of research, and we believe our contributions represent a major step in the right direction toward truly general visual representations.",
+      "should_change_at": [22, 25],
+      "should_preserve": [],
+      "notes": "Sycophantic tone ('you are absolutely right', 'excellent') plus generic positive conclusion ('future looks bright', 'major step in the right direction'). Both are KEEP patterns in academic mode."
+    },
+    {
+      "id": "intro_001",
+      "section": "intro",
+      "mode": "academic",
+      "input": "Recent advances in diffusion models have unleashed a groundbreaking revolution in generative vision. Our proposed framework delivers state-of-the-art results on ImageNet and establishes a novel paradigm for conditional synthesis that is robust to prompt perturbations.",
+      "should_change_at": [4, 7],
+      "should_preserve": ["state-of-the-art", "novel", "robust"],
+      "notes": "Flags promotional language ('unleashed', 'groundbreaking revolution') and the AI-vocab blocklist ('unleashed'). Preserves the three academic-allowed descriptors 'state-of-the-art', 'novel', and 'robust'."
+    },
+    {
+      "id": "intro_002",
+      "section": "intro",
+      "mode": "academic",
+      "input": "Transformer architectures serve as a testament to the enduring importance of attention, marking a pivotal shift in the evolving landscape of deep learning. Let's dive into our contributions. In Section 3 we present the full architecture, and in Section 4 we report ablation studies on the query encoder.",
+      "should_change_at": [1, 28],
+      "should_preserve": ["In Section 3 we present", "in Section 4 we report"],
+      "notes": "Flags inflated symbolism (Pattern 1: 'testament', 'pivotal shift', 'evolving landscape') and generic signposting ('Let's dive into our contributions'). Academic override preserves structural signposts that reference specific numbered sections."
+    },
+    {
+      "id": "related_work_001",
+      "section": "related_work",
+      "mode": "academic",
+      "input": "Some researchers argue that contrastive objectives are superior to reconstruction losses for representation learning. Observers have cited the widespread adoption of SimCLR as evidence of this trend, and experts believe that self-supervised pretraining will soon eclipse supervised approaches on most downstream tasks.",
+      "should_change_at": [5],
+      "should_preserve": ["self-supervised"],
+      "notes": "Flags vague attributions ('some researchers argue', 'observers have cited', 'experts believe'). Preserves the technical compound 'self-supervised'."
+    },
+    {
+      "id": "related_work_002",
+      "section": "related_work",
+      "mode": "academic",
+      "input": "Prior work addresses not only the accuracy gap on head classes but also the sample efficiency on tail classes. It is not just about raw top-1 accuracy; it is about calibration under distribution shift. It is not merely an optimization problem, it is a representation problem at the feature level.",
+      "should_change_at": [9],
+      "should_preserve": ["not only", "but also"],
+      "notes": "Academic override allows one 'not only X but also Y' per section, so the first sentence stays. The second and third 'it is not just / it is not merely' instances are flagged as overused negative parallelism."
+    },
+    {
+      "id": "method_001",
+      "section": "method",
+      "mode": "academic",
+      "input": "The model was trained for 100 epochs on 8 A100 GPUs using the AdamW optimizer with a peak learning rate of 1e-4. Data were collected from the ImageNet-1k training split and augmented with RandAugment. Hyperparameters were selected via 5-fold cross-validation on a held-out subset of the training data.",
+      "should_change_at": [],
+      "should_preserve": ["the model was trained", "data were collected"],
+      "notes": "SKIP test for Pattern 13: procedural passive in Methods section is legitimate and must be preserved unchanged. No patterns should fire."
+    },
+    {
+      "id": "method_002",
+      "section": "method",
+      "mode": "academic",
+      "input": "We tentatively suggest that perhaps the encoder may possibly learn rotation-equivariant features during the self-supervised phase, although this could potentially also be explained by the choice of data augmentation. We suggest that this interaction warrants further study.",
+      "should_change_at": [24],
+      "should_preserve": ["we suggest", "self-supervised"],
+      "notes": "The first sentence stacks four hedges ('tentatively', 'perhaps', 'may possibly', 'could potentially') on a single claim and is flagged. The second sentence's single-layer 'we suggest' is preserved per the academic override."
+    },
+    {
+      "id": "method_003",
+      "section": "method",
+      "mode": "academic",
+      "input": "We train a data-driven, end-to-end model that processes video streams in real-time. The cross-functional, client-facing, decision-making pipeline was evaluated with a well-known, high-quality benchmark suite used by prior work on out-of-distribution detection.",
+      "should_change_at": [26],
+      "should_preserve": ["data-driven", "end-to-end", "real-time", "out-of-distribution"],
+      "notes": "Preserves the four technical compounds from the academic override list. Flags the gratuitous stacking of non-technical hyphenated compounds ('cross-functional, client-facing, decision-making', 'well-known, high-quality') in the second sentence."
+    },
+    {
+      "id": "experiments_001",
+      "section": "experiments",
+      "mode": "academic",
+      "input": "We evaluate on four benchmarks — ImageNet, COCO, ADE20K, and iNaturalist — and compare against three strong baselines — MAE, DINOv2, and SimCLR — using the standard protocol — linear probing with a frozen backbone — on each task. Normalized scores lie in $x \\in [-1, 1]$.",
+      "should_change_at": [14],
+      "should_preserve": ["$x \\in [-1, 1]$"],
+      "notes": "Paragraph contains more than three em dashes, crossing the density threshold. The em dash inside the inline math environment is preserved per the academic override."
+    },
+    {
+      "id": "experiments_002",
+      "section": "experiments",
+      "mode": "academic",
+      "input": "We follow the evaluation protocol of Convolutional Neural Networks for Image Classification, reporting top-1 accuracy on the ImageNet validation split. We also include results on the long-tailed variant iNaturalist 2018 to assess performance under class imbalance.",
+      "should_change_at": [],
+      "should_preserve": ["Convolutional Neural Networks for Image Classification", "long-tailed"],
+      "notes": "SKIP test for Pattern 17: title case appearing inside running text (as a paper title) is left untouched in academic mode, since academic venues require title case in headings and reference titles."
+    },
+    {
+      "id": "results_001",
+      "section": "results",
+      "mode": "academic",
+      "input": "Our main findings on ImageNet are summarized below. **Accuracy:** The proposed method reaches 85.3% top-1. **Robustness:** The model is **significantly** more robust to ImageNet-C corruptions. **Efficiency:** Training uses 40% fewer FLOPs than the MAE baseline, which we attribute to the shallower decoder.",
+      "should_change_at": [15, 16],
+      "should_preserve": ["robust"],
+      "notes": "Flags mechanical boldface use (Pattern 15) and inline-header vertical lists with bold headers followed by colons (Pattern 16). Preserves the academic-allowed descriptor 'robust'."
+    },
+    {
+      "id": "results_002",
+      "section": "results",
+      "mode": "academic",
+      "input": "It is important to note that the data shows a consistent gain across all seeds. At this point in time, our method has the ability to process 1024 tokens per second on a single A100. Due to the fact that memory usage is lower, we can fit a larger batch size in the event that the user wants longer contexts.",
+      "should_change_at": [23],
+      "should_preserve": [],
+      "notes": "Flags the full cluster of filler phrases from Pattern 23: 'it is important to note that', 'at this point in time', 'has the ability to', 'due to the fact that', 'in the event that'."
+    },
+    {
+      "id": "discussion_001",
+      "section": "discussion",
+      "mode": "academic",
+      "input": "Our ablations reveal three key insights, three recurring failure modes, and three actionable design rules. The method improves accuracy, calibration, and robustness. It offers speed, simplicity, and scalability. It benefits from scale, diversity, and augmentation.",
+      "should_change_at": [10],
+      "should_preserve": ["robustness"],
+      "notes": "Classic Rule of Three overuse (Pattern 10): four back-to-back three-item lists in four consecutive sentences. 'robustness' stays because 'robust' is an academic-allowed descriptor."
+    },
+    {
+      "id": "discussion_002",
+      "section": "discussion",
+      "mode": "academic",
+      "input": "We analyze the behavior of the model under domain shift. The network generalizes well to photographic inputs but struggles on line drawings. The architecture overfits to texture cues when trained without strong augmentation. The system also shows degraded calibration on the shifted test set.",
+      "should_change_at": [11],
+      "should_preserve": [],
+      "notes": "Elegant variation: the same referent is cycled through 'the model', 'the network', 'the architecture', 'the system' across four consecutive sentences. Flagged by Pattern 11."
+    },
+    {
+      "id": "limitations_001",
+      "section": "limitations",
+      "mode": "academic",
+      "input": "Despite its strong empirical results, our method faces several challenges. Training requires roughly 2048 A100-hours, which is out of reach for many academic labs. The approach also assumes access to a large unlabeled pretraining corpus. Future work could explore distillation into a lighter student model and pretraining on domain-specific data.",
+      "should_change_at": [],
+      "should_preserve": ["future work could explore"],
+      "notes": "SKIP test for Pattern 6: 'faces several challenges' / 'future work could explore' formulas are legitimate inside a dedicated Limitations section and must not be flagged."
+    },
+    {
+      "id": "conclusion_001",
+      "section": "conclusion",
+      "mode": "academic",
+      "input": "The future looks bright for attention-based architectures in medical imaging. Exciting times lie ahead as the community continues its journey toward truly generalist diagnostic models. Our work represents a meaningful step in the right direction, and we look forward to what comes next.",
+      "should_change_at": [25],
+      "should_preserve": [],
+      "notes": "Generic positive conclusion (Pattern 25): 'future looks bright', 'exciting times lie ahead', 'step in the right direction'. Pattern 25 is KEEP in academic mode."
+    },
+    {
+      "id": "conclusion_002",
+      "section": "conclusion",
+      "mode": "academic",
+      "input": "Great question! You are absolutely right that evaluation is hard. At its core, what really matters is whether the model generalizes. The real question is whether the community is ready to adopt new evaluation protocols. Fundamentally, the deeper issue is not accuracy but trust.",
+      "should_change_at": [22, 27],
+      "should_preserve": [],
+      "notes": "Sycophantic/servile tone (Pattern 22) and stacked persuasive-authority tropes (Pattern 27): 'at its core', 'what really matters', 'the real question is', 'fundamentally', 'the deeper issue'."
+    },
+    {
+      "id": "future_work_001",
+      "section": "future_work",
+      "mode": "academic",
+      "input": "As of my last training update, the field of neural retrieval is evolving rapidly. While specific details are limited, it appears that dense retrieval scales to web-sized corpora. Based on available information, we plan to extend our method to multilingual settings in future work.",
+      "should_change_at": [21],
+      "should_preserve": [],
+      "notes": "Flags knowledge-cutoff disclaimers (Pattern 21): 'as of my last training update', 'while specific details are limited', 'based on available information'."
+    },
+    {
+      "id": "discussion_003",
+      "section": "discussion",
+      "mode": "academic",
+      "input": "The ablation covers a wide spectrum, from the singular choice of the optimizer to the grand unified treatment of regularization, from the birth of the embedding layer to the quiet death of the final classifier. We describe the pipeline as \u201cend-to-end\u201d in the sense that gradients propagate through every module.",
+      "should_change_at": [12],
+      "should_preserve": ["\u201cend-to-end\u201d"],
+      "notes": "Flags false ranges (Pattern 12): 'from the singular choice ... to the grand unified treatment', 'from the birth ... to the quiet death'. Pattern 19 (curly quotes) is SKIP-conditional in academic mode, so the curly-quoted \"end-to-end\" survives unchanged, as does the technical compound itself."
+    }
+  ],
+  "pass_criterion": "For each sample, the humanizer changes EVERY pattern listed in should_change_at and PRESERVES every phrase listed in should_preserve. A sample fails if any should_change_at pattern remains or any should_preserve phrase is removed/altered."
+}
