@@ -1,6 +1,6 @@
 # Academic Paper Plugin
 
-A Claude Code plugin for AI-assisted academic paper writing, reviewing, and revision — designed for empirical EECS papers (ML, CV, NLP, systems). Ten specialized agents handle outline design, drafting, argumentation, figures, LaTeX compile, citation management, peer-review simulation, stress testing, and reviewer-comment revision.
+A Claude Code plugin for AI-assisted academic paper writing, reviewing, and revision — designed for empirical EECS papers (ML, CV, NLP, systems). Eleven specialized agents handle outline design, drafting, argumentation, figures, LaTeX compile, citation management, peer-review simulation, stress testing, reviewer-comment revision, and academic-aware removal of AI-writing patterns.
 
 [中文版 / Chinese](README-zh.md)
 
@@ -23,6 +23,7 @@ Inside a Claude Code session, run:
 | `/paper-compile [--clean] [--page-check]` | Compile pdflatex + bibtex |
 | `/paper-cite <action> <args>` | Manage `references.bib` |
 | `/paper-review` | Simulate a 5-reviewer peer review |
+| `/paper-humanize [<file-or-paste>]` | Remove AI writing patterns (academic-aware) |
 | `/paper-revise [<comments-file>]` | Process reviewer comments |
 
 ## Requirements

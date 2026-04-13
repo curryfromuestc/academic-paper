@@ -1,6 +1,6 @@
 # Academic Paper 插件
 
-一个用于 AI 辅助学术论文写作、审稿和修订的 Claude Code 插件，专为实证类 EECS 论文（ML、CV、NLP、系统）设计。10 个专用 agent 负责大纲设计、写作、论证、图表、LaTeX 编译、引用管理、同行评审模拟、压力测试和修订处理。
+一个用于 AI 辅助学术论文写作、审稿和修订的 Claude Code 插件，专为实证类 EECS 论文（ML、CV、NLP、系统）设计。11 个专用 agent 负责大纲设计、写作、论证、图表、LaTeX 编译、引用管理、同行评审模拟、压力测试、修订处理，以及面向学术语境的 AI 写作痕迹去除。
 
 [English version / 英文版](README.md)
 
@@ -23,6 +23,7 @@
 | `/paper-compile [--clean] [--page-check]` | pdflatex + bibtex 编译 |
 | `/paper-cite <action> <args>` | 管理 `references.bib` |
 | `/paper-review` | 5 人模拟同行评审 |
+| `/paper-humanize [<file-or-paste>]` | 去除 AI 写作痕迹（学术语境感知） |
 | `/paper-revise [<comments-file>]` | 处理审稿意见 |
 
 ## 环境要求
